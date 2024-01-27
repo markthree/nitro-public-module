@@ -2,9 +2,17 @@
   "name": "playground",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "nitro dev",
+    "build": "nitro build",
+    "preview": "node ./.output/server/index.mjs"
+  },
   "devDependencies": {
+    "jiti": "^1.21.0",
     "nitro-public-module": "workspace:*",
     "nitropack": "^2.8.1"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
   }
 }

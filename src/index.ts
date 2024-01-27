@@ -1,4 +1,10 @@
-import { resolve } from 'path'
-const foo = 1
+import type { NitroModule } from "nitropack";
 
-export { resolve, foo }
+const module: NitroModule = {
+  name: "nitro-public",
+  setup(nitro) {
+    console.log("hello world");
+  },
+};
+
+export default module;

@@ -1,3 +1,6 @@
 dist
+.nuxt
+.nitro
+.output
 coverage
 node_modules

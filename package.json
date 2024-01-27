@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "dev": "pnpm build:stub",
+    "dev": "pnpm play:dev",
     "prepublishOnly": "pnpm build",
     "build:stub": "pnpm build --stub",
     "play:dev": "pnpm -C playground dev",
