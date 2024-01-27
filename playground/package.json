@@ -5,14 +5,12 @@
   "scripts": {
     "dev": "nitro dev",
     "build": "nitro build",
+    "prepare": "nitro prepare",
     "preview": "node ./.output/server/index.mjs"
   },
   "devDependencies": {
-    "jiti": "^1.21.0",
     "nitro-public-module": "workspace:*",
-    "nitropack": "^2.8.1"
-  },
-  "dependencies": {
+    "nitropack": "^2.8.1",
     "chokidar": "^3.5.3"
   }
 }

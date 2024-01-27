@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "types": ["../playground/.nitro/types/nitro.d.ts"],
+    "paths": {
+      "#nitro-public": ["./virtual/nitro-public.ts"]
+    }
+  }
+}

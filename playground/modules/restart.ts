@@ -6,7 +6,9 @@ export default defineNitroModule({
     if (!nitro.options.dev) {
       return;
     }
-    const watcher = watch("../src/**", { ignoreInitial: true }).once(
+    const watcher = watch(["../src/**", "../runtime/virtual/nitro-public.ts"], {
+      ignoreInitial: true,
+    }).once(
       "all",
       () => {
         nitro.hooks.callHook("restart");
