@@ -58,7 +58,7 @@ export default defineNitroConfig({
 
 #### fallback
 
-支持在生产环境中回滚任何文件（即使是动态的 添加到公共）
+支持在生产环境中回滚任何文件 (即使是动态的 添加到 public 中的文件)
 
 #### spa
 
