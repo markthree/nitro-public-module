@@ -1,7 +1,7 @@
 import { lookup } from "mrmime";
 import { fileURLToPath } from "node:url";
-import { createReadStream, existsSync } from "fs";
 import { basename, dirname, resolve } from "pathe";
+import { createReadStream, existsSync } from "node:fs";
 import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
 import {
   defineResponseMiddleware,
@@ -48,13 +48,13 @@ export function createPublicFallbackMiddleware(factory) {
       withoutTrailingSlash(getRequestURL(e).pathname),
     );
 
-    const result = await factory(withoutSlashPathname);
+    const meta = await factory(withoutSlashPathname);
 
-    if (!result) {
+    if (!meta) {
       return;
     }
 
-    let { file, contentType, withPublicDir = true } = result;
+    let { file, contentType, withPublicDir = true } = meta;
 
     if (typeof file !== "string") {
       return;
