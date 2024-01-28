@@ -3,7 +3,7 @@
     "module": "ESNext",
     "allowJs": true,
     "checkJs": true,
-    "outDir": "./",
+    "outDir": "../dist",
     "moduleResolution": "Node",
     "types": ["../playground/.nitro/types/nitro.d.ts"],
     "paths": {
