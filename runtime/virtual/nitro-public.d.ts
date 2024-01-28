@@ -1,4 +1,4 @@
-import { NitroEventHandler } from "nitropack";
+import { eventHandler } from "#imports";
 
 export const serverDir: () => string;
 
@@ -21,4 +21,4 @@ type Factory = (withoutSlashPathname: string) => {
 
 export const createPublicFallbackMiddleware: (
   factory: Factory,
-) => NitroEventHandler["handler"];
+) => typeof eventHandler;

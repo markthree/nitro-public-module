@@ -10,7 +10,7 @@ import {
   sendStream,
   setResponseHeader,
   setResponseStatus,
-} from "h3";
+} from "#imports";
 
 export function serverDir() {
   if (import.meta.dev) {

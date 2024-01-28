@@ -7,7 +7,8 @@
     "moduleResolution": "Node",
     "types": ["../playground/.nitro/types/nitro.d.ts"],
     "paths": {
-      "#nitro-public": ["./virtual/nitro-public.d.ts"]
+      "#nitro-public": ["./virtual/nitro-public.d.ts"],
+      "#imports": ["../playground/.nitro/types/nitro-imports"]
     }
   },
   "include": ["**/*.ts", "**/*.js"],

@@ -1,5 +1,5 @@
+import { resolve } from "path";
 import { copyFile } from "fs/promises";
-import { dirname, resolve } from "path";
 
 export default defineNitroModule({
   name: "move",
@@ -7,7 +7,6 @@ export default defineNitroModule({
     if (nitro.options.dev) {
       return;
     }
-    console.log(nitro.options.output.dir);
 
     nitro.hooks.hook("compiled", async () => {
       await copyFile(
