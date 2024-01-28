@@ -20,7 +20,7 @@ export function publicDir() {
 
 /**
  * create a fallback middleware for public
- * @param {(withoutSlashPathname: string) => { file?: string, mime?: string, withPublicPrefix?: boolean } | void} factory
+ * @param {(withoutSlashPathname: string) => { file?: string, mime?: string, withPublicDir?: boolean } | void} factory
  */
 export function createPublicFallbackMiddleware(factory) {
   const beforeResponse = defineResponseMiddleware(async (e) => {
@@ -43,13 +43,13 @@ export function createPublicFallbackMiddleware(factory) {
       return;
     }
 
-    let { file, mime, withPublicPrefix = true } = result;
+    let { file, mime, withPublicDir = true } = result;
 
     if (typeof file !== "string") {
       return;
     }
 
-    if (withPublicPrefix) {
+    if (withPublicDir) {
       file = resolve(publicDir(), file);
     }
 

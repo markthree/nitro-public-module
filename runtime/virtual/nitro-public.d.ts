@@ -16,7 +16,7 @@ type Factory = (withoutSlashPathname: string) => {
   /**
    * @default true
    */
-  withPublicPrefix?: boolean;
+  withPublicDir?: boolean;
 } | void;
 
 export const createPublicFallbackMiddleware: (
