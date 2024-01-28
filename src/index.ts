@@ -40,8 +40,8 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
       }
 
       if (!nitro.options.preset.includes("node")) {
-        nitro.logger.withTag("nitro-public").warn(
-          "Only the node runtime is supported (preset)",
+        nitro.logger.withTag("nitro-public").withTag("preset").warn(
+          "Only the node runtime is supported",
         );
         return;
       }
