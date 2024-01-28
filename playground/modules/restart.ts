@@ -6,7 +6,7 @@ export default defineNitroModule({
     if (!nitro.options.dev) {
       return;
     }
-    const watcher = watch(["../src/**", "../runtime/virtual/nitro-public.ts"], {
+    const watcher = watch(["../src/**", "../runtime/**/*"], {
       ignoreInitial: true,
     }).once(
       "all",

@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
     "module": "ESNext",
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "./",
     "moduleResolution": "Node",
     "types": ["../playground/.nitro/types/nitro.d.ts"],
     "paths": {
-      "#nitro-public": ["./virtual/nitro-public.ts"]
+      "#nitro-public": ["./virtual/nitro-public.d.ts"]
     }
-  }
+  },
+  "include": ["**/*.ts", "**/*.js"],
+  "exclude": []
 }

@@ -58,6 +58,7 @@
     "nitropack": ">=2.0.0"
   },
   "dependencies": {
-    "mrmime": "^2.0.0"
+    "mrmime": "^2.0.0",
+    "ufo": "^1.3.2"
   }
 }

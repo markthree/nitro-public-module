@@ -10,7 +10,7 @@ const _dirname = typeof __dirname !== "undefined"
 const runtime = resolve(_dirname, "../runtime");
 
 interface Options {
-  preset?: "spa" | "fallback";
+  preset?: "spa" | "ssg" | "fallback" | false;
 }
 
 const defaultOptions: Options = {
@@ -21,7 +21,6 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
   return {
     name: "nitro-public",
     setup(nitro) {
-      // TODO check preset (pure node runtime)
       nitro.options.handlers ??= [];
       nitro.options.virtual ??= {};
       nitro.options.typescript.tsConfig ??= {};
@@ -29,14 +28,21 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
       nitro.options.typescript.tsConfig.compilerOptions.paths ??= {};
 
       nitro.options.typescript.tsConfig.compilerOptions.paths["#nitro-public"] =
-        [resolve(runtime, "virtual/nitro-public.ts")];
+        [resolve(runtime, "virtual/nitro-public.d.ts")];
 
       nitro.options.virtual["#nitro-public"] = () => {
-        const nitroPublic = resolve(runtime, "virtual/nitro-public.ts");
+        const nitroPublic = resolve(runtime, "virtual/nitro-public.js");
         return readFile(nitroPublic, "utf8");
       };
 
-      if (nitro.options.dev) {
+      if (nitro.options.dev || options.preset === false) {
+        return;
+      }
+
+      if (!nitro.options.preset.includes("node")) {
+        nitro.logger.withTag("nitro-public").warn(
+          "Only the node runtime is supported (preset)",
+        );
         return;
       }
 
@@ -51,6 +57,13 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
         nitro.options.handlers.push({
           middleware: true,
           handler: resolve(runtime, "middleware/fallback.ts"),
+        });
+      }
+
+      if (options.preset === "ssg") {
+        nitro.options.handlers.push({
+          middleware: true,
+          handler: resolve(runtime, "middleware/ssg.ts"),
         });
       }
     },
