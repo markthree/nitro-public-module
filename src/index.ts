@@ -23,21 +23,31 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
     setup(nitro) {
       useVirtual();
 
-      // disable preset
-      if (nitro.options.dev || options.preset === false) {
-        return;
-      }
-
-      if (!nitro.options.preset.includes("node")) {
-        nitro.logger.withTag("nitro-public").withTag("preset").warn(
-          "Only the node runtime is supported",
-        );
+      if (isPresetDisabled()) {
         return;
       }
 
       useMiddleware(options.preset);
 
-      function useMiddleware(preset: "spa" | "ssg" | "fallback" = "fallback") {
+      function isPresetDisabled() {
+        if (nitro.options.dev || options.preset === false) {
+          return true;
+        }
+
+        if (!nitro.options.preset.includes("node")) {
+          nitro.logger.withTag("nitro-public").withTag("preset").warn(
+            "Only the node runtime is supported",
+          );
+          return true;
+        }
+
+        return false;
+      }
+
+      function useMiddleware(preset: Options["preset"] = "fallback") {
+        if (preset === false) {
+          return;
+        }
         nitro.options.handlers ??= [];
         nitro.options.handlers.push({
           method: "GET",
