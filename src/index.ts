@@ -30,18 +30,35 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
       useMiddleware(options.preset);
 
       function isPresetDisabled() {
-        if (nitro.options.dev || options.preset === false) {
+        const { preset } = options;
+        const { preset: nitroPreset, dev } = nitro.options;
+        if (dev || preset === false) {
           return true;
         }
 
-        if (!nitro.options.preset.includes("node")) {
-          nitro.logger.withTag("nitro-public").withTag("preset").warn(
-            "Only the node runtime is supported",
+        const isNodeRuntime = nitroPreset.includes("node");
+
+        if (isNodeRuntime) {
+          return false;
+        }
+
+        const logger = nitro.logger.withTag("nitro-public").withTag(
+          preset as string,
+        );
+
+        if (preset === "fallback") {
+          logger.warn("Only the node runtime is supported");
+          return true;
+        }
+
+        if (nitroPreset.includes("deno") || nitroPreset.includes("bun")) {
+          logger.warn(
+            `Experimental support ${nitroPreset}，If an error occurs during the run, please manually set the preset to false`,
           );
-          return true;
+          return false;
         }
 
-        return false;
+        return true;
       }
 
       function useMiddleware(preset: Options["preset"] = "fallback") {
