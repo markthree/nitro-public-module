@@ -21,20 +21,9 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
   return {
     name: "nitro-public",
     setup(nitro) {
-      nitro.options.handlers ??= [];
-      nitro.options.virtual ??= {};
-      nitro.options.typescript.tsConfig ??= {};
-      nitro.options.typescript.tsConfig.compilerOptions ??= {};
-      nitro.options.typescript.tsConfig.compilerOptions.paths ??= {};
+      useVirtual();
 
-      nitro.options.typescript.tsConfig.compilerOptions.paths["#nitro-public"] =
-        [resolve(runtime, "virtual/nitro-public.d.ts")];
-
-      nitro.options.virtual["#nitro-public"] = () => {
-        const nitroPublic = resolve(runtime, "virtual/nitro-public.js");
-        return readFile(nitroPublic, "utf8");
-      };
-
+      // disable preset
       if (nitro.options.dev || options.preset === false) {
         return;
       }
@@ -46,25 +35,29 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
         return;
       }
 
-      if (options.preset === "spa") {
+      useMiddleware(options.preset);
+
+      function useMiddleware(preset: "spa" | "ssg" | "fallback" = "fallback") {
+        nitro.options.handlers ??= [];
         nitro.options.handlers.push({
           middleware: true,
-          handler: resolve(runtime, "middleware/spa.ts"),
+          handler: resolve(runtime, `middleware/${preset}.ts`),
         });
       }
 
-      if (options.preset === "fallback") {
-        nitro.options.handlers.push({
-          middleware: true,
-          handler: resolve(runtime, "middleware/fallback.ts"),
-        });
-      }
-
-      if (options.preset === "ssg") {
-        nitro.options.handlers.push({
-          middleware: true,
-          handler: resolve(runtime, "middleware/ssg.ts"),
-        });
+      function useVirtual() {
+        nitro.options.virtual ??= {};
+        nitro.options.typescript.tsConfig ??= {};
+        nitro.options.typescript.tsConfig.compilerOptions ??= {};
+        nitro.options.typescript.tsConfig.compilerOptions.paths ??= {};
+        nitro.options.typescript.tsConfig.compilerOptions
+          .paths["#nitro-public"] = [
+            resolve(runtime, "virtual/nitro-public.d.ts"),
+          ];
+        nitro.options.virtual["#nitro-public"] = () => {
+          const nitroPublic = resolve(runtime, "virtual/nitro-public.js");
+          return readFile(nitroPublic, "utf8");
+        };
       }
     },
   };
