@@ -1,6 +1,6 @@
 import { fileURLToPath } from "url";
 import { readFile } from "fs/promises";
-import { dirname, resolve } from "path";
+import { dirname, resolve } from "pathe";
 import type { NitroModule } from "nitropack";
 
 const _dirname = typeof __dirname !== "undefined"
@@ -40,6 +40,7 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
       function useMiddleware(preset: "spa" | "ssg" | "fallback" = "fallback") {
         nitro.options.handlers ??= [];
         nitro.options.handlers.push({
+          method: "GET",
           middleware: true,
           handler: resolve(runtime, `middleware/${preset}.ts`),
         });

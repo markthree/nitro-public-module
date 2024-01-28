@@ -1,8 +1,16 @@
 import { lookup } from "mrmime";
 import { fileURLToPath } from "node:url";
 import { createReadStream, existsSync } from "fs";
-import { basename, dirname, resolve } from "node:path";
+import { basename, dirname, resolve } from "pathe";
 import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
+import {
+  defineResponseMiddleware,
+  eventHandler,
+  getRequestURL,
+  sendStream,
+  setResponseHeader,
+  setResponseStatus,
+} from "h3";
 
 export function serverDir() {
   if (import.meta.dev) {
