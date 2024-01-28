@@ -12,7 +12,7 @@ type Factory = (withoutSlashPathname: string) => {
   /**
    * Content-Type
    */
-  mime?: string;
+  contentType?: string;
   /**
    * @default true
    */

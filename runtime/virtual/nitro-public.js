@@ -28,9 +28,12 @@ export function publicDir() {
 
 /**
  * create a fallback middleware for public
- * @param {(withoutSlashPathname: string) => { file?: string, mime?: string, withPublicDir?: boolean } | void} factory
+ * @param {(withoutSlashPathname: string) => { file?: string, contentType?: string, withPublicDir?: boolean } | void} factory
  */
 export function createPublicFallbackMiddleware(factory) {
+  if (import.meta.dev) {
+    return eventHandler(() => {});
+  }
   const beforeResponse = defineResponseMiddleware(async (e) => {
     if (e.method !== "GET") {
       return;
@@ -51,7 +54,7 @@ export function createPublicFallbackMiddleware(factory) {
       return;
     }
 
-    let { file, mime, withPublicDir = true } = result;
+    let { file, contentType, withPublicDir = true } = result;
 
     if (typeof file !== "string") {
       return;
@@ -63,7 +66,11 @@ export function createPublicFallbackMiddleware(factory) {
 
     if (existsSync(file)) {
       setResponseStatus(e, 200);
-      setResponseHeader(e, "Content-Type", mime ?? lookup(basename(file)));
+      setResponseHeader(
+        e,
+        "Content-Type",
+        contentType ?? lookup(basename(file)),
+      );
       return sendStream(e, createReadStream(file));
     }
   });
