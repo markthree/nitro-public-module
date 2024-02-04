@@ -125,6 +125,6 @@ environments (for pure node runtime)
 
 ## License
 
-Made with [name](https://github.com/markthree)
+Made with [markthree](https://github.com/markthree)
 
 Published under [MIT License](./LICENSE).

@@ -10,6 +10,13 @@ const _dirname = typeof __dirname !== "undefined"
 const runtime = resolve(_dirname, "../runtime");
 
 interface Options {
+  /**
+   * @default By default, it is automatically inferred
+   */
+  forcePresetEnabled?: boolean;
+  /**
+   * @default "fallback"
+   */
   preset?: "spa" | "ssg" | "fallback" | false;
 }
 
@@ -30,33 +37,26 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
       useMiddleware(options.preset);
 
       function isPresetDisabled() {
-        const { preset } = options;
+        const { preset, forcePresetEnabled } = options;
         const { preset: nitroPreset, dev } = nitro.options;
+
         if (dev || preset === false) {
           return true;
         }
 
-        const isNodeRuntime = nitroPreset.includes("node");
+        const isRuntime = ["node", "deno", "bun"].some((runtime) => {
+          return nitroPreset.includes(runtime);
+        });
 
-        if (isNodeRuntime) {
+        if (isRuntime || forcePresetEnabled === true) {
           return false;
         }
 
-        const logger = nitro.logger.withTag("nitro-public").withTag(
-          preset as string,
+        const logger = nitro.logger.withTag("nitro-public");
+
+        logger.warn(
+          `The preset "${preset}" is not supported by the ${nitroPreset} runtime.Of course, you can also enable the forceEnabled option to force it on`,
         );
-
-        if (preset === "fallback") {
-          logger.warn("Only the node runtime is supported");
-          return true;
-        }
-
-        if (nitroPreset.includes("deno") || nitroPreset.includes("bun")) {
-          logger.warn(
-            `Experimental support ${nitroPreset}，If an error occurs during the run, please manually set the preset to false`,
-          );
-          return false;
-        }
 
         return true;
       }
