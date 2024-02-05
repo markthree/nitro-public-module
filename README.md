@@ -4,6 +4,12 @@ nitro module for better public compatibility
 
 <br />
 
+## README 🦉
+
+[简体中文](./README_CN.md) | English
+
+<br />
+
 ## Usage
 
 ### install
