@@ -1,6 +1,6 @@
 # nitro-public-module
 
-nitro module for better public compatibility (for pure node runtime)
+nitro module for better public compatibility
 
 <br />
 

@@ -55,7 +55,7 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
         const logger = nitro.logger.withTag("nitro-public");
 
         logger.warn(
-          `The preset "${preset}" is not supported by the ${nitroPreset} runtime.Of course, you can also enable the forceEnabled option to force it on`,
+          `The preset "${preset}" is not supported by the ${nitroPreset} runtime. Of course, you can also enable the forceEnabled option to force it on`,
         );
 
         return true;

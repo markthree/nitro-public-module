@@ -1,6 +1,6 @@
 # nitro-public-module
 
-对于 nitro 更好的静态资源兼容模块 (纯 node 运行时)
+对于 nitro 更好的静态资源兼容模块
 
 <br />
 
