@@ -1,3 +1,4 @@
+import { defu } from "defu";
 import { fileURLToPath } from "url";
 import { readFile } from "fs/promises";
 import { dirname, resolve } from "pathe";
@@ -28,6 +29,8 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
   return {
     name: "nitro-public",
     setup(nitro) {
+      options = defu(options, defaultOptions);
+
       useVirtual();
 
       if (isPresetDisabled()) {

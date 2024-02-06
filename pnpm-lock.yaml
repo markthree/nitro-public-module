@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
       mrmime:
         specifier: ^2.0.0
         version: 2.0.0
@@ -1660,7 +1663,6 @@ packages:
 
   /defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
-    dev: true
 
   /delegates@1.0.0:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
