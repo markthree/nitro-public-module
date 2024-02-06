@@ -55,7 +55,7 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
           return false;
         }
 
-        const logger = nitro.logger.withTag("nitro-public");
+        const logger = nitro.logger.withTag("public");
 
         logger.warn(
           `The preset "${preset}" is not supported by the ${nitroPreset} runtime. Of course, you can also enable the forceEnabled option to force it on`,
@@ -81,10 +81,9 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
         nitro.options.typescript.tsConfig ??= {};
         nitro.options.typescript.tsConfig.compilerOptions ??= {};
         nitro.options.typescript.tsConfig.compilerOptions.paths ??= {};
-        nitro.options.typescript.tsConfig.compilerOptions
-          .paths["#nitro-public"] = [
-            resolve(runtime, "virtual/nitro-public.d.ts"),
-          ];
+        nitro.options.typescript.tsConfig.compilerOptions.paths[
+          "#nitro-public"
+        ] = [resolve(runtime, "virtual/nitro-public.d.ts")];
         nitro.options.virtual["#nitro-public"] = () => {
           const nitroPublic = resolve(runtime, "virtual/nitro-public.js");
           return readFile(nitroPublic, "utf8");
