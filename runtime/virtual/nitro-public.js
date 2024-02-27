@@ -8,6 +8,7 @@ import {
   defineResponseMiddleware,
   eventHandler,
   getRequestURL,
+  getResponseStatus,
   sendStream,
   setResponseHeader,
   setResponseStatus,
@@ -39,6 +40,7 @@ export function createPublicFallbackMiddleware(factory) {
     if (e.method !== "GET") {
       return;
     }
+
     const noHandled = e.handled === false || getResponseStatus(e) === 404;
 
     if (!noHandled) {
