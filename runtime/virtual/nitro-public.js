@@ -1,6 +1,7 @@
 import { lookup } from "mrmime";
 import { fileURLToPath } from "node:url";
-import { basename, dirname, resolve } from "pathe";
+import { lstat } from "node:fs/promises";
+import { basename, dirname, join } from "pathe";
 import { createReadStream, existsSync } from "node:fs";
 import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
 import {
@@ -23,7 +24,7 @@ export function publicDir() {
   if (import.meta.dev) {
     return "./public";
   }
-  return resolve(serverDir(), "../public");
+  return join(serverDir(), "../public");
 }
 
 /**
@@ -61,10 +62,10 @@ export function createPublicFallbackMiddleware(factory) {
     }
 
     if (withPublicDir) {
-      file = resolve(publicDir(), file);
+      file = join(publicDir(), file);
     }
 
-    if (existsSync(file)) {
+    if (existsSync(file) && (await lstat(file)).isFile()) {
       setResponseStatus(e, 200);
       setResponseHeader(
         e,

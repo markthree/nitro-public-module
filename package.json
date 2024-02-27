@@ -22,12 +22,8 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "dev": "pnpm play:dev",
+    "stub": "pnpm build --stub",
     "prepublishOnly": "pnpm build",
-    "build:stub": "pnpm build --stub",
-    "play:dev": "pnpm -C playground dev",
-    "play:build": "pnpm -C playground build",
-    "play:preview": "pnpm -C playground preview",
     "release": "bumpp --commit --push --tag && npm publish"
   },
   "keywords": [
