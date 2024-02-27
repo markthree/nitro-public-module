@@ -4,7 +4,7 @@ export const serverDir: () => string;
 
 export const publicDir: () => string;
 
-type Factory = (withoutSlashPathname: string) => {
+interface Meta {
   /**
    * file
    */
@@ -17,7 +17,9 @@ type Factory = (withoutSlashPathname: string) => {
    * @default true
    */
   withPublicDir?: boolean;
-} | void;
+}
+
+type Factory = (withoutSlashPathname: string) => Meta | Promise<Meta> | void;
 
 export const createPublicFallbackMiddleware: (
   factory: Factory,

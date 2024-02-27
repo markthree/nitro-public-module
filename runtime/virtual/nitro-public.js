@@ -30,7 +30,8 @@ export function publicDir() {
 
 /**
  * create a fallback middleware for public
- * @param {(withoutSlashPathname: string) => { file?: string, contentType?: string, withPublicDir?: boolean } | void} factory
+ * @typedef {{ file?: string, contentType?: string, withPublicDir?: boolean }} Meta
+ * @param {(withoutSlashPathname: string) => Meta | Promise<Meta> | void} factory
  */
 export function createPublicFallbackMiddleware(factory) {
   if (import.meta.dev) {
@@ -48,7 +49,7 @@ export function createPublicFallbackMiddleware(factory) {
     }
 
     const withoutSlashPathname = withoutLeadingSlash(
-      withoutTrailingSlash(getRequestURL(e).pathname),
+      withoutTrailingSlash(decodeURIComponent(getRequestURL(e).pathname)),
     );
 
     const meta = await factory(withoutSlashPathname);
@@ -69,11 +70,11 @@ export function createPublicFallbackMiddleware(factory) {
 
     if (existsSync(file) && (await lstat(file)).isFile()) {
       setResponseStatus(e, 200);
-      setResponseHeader(
-        e,
-        "Content-Type",
-        contentType ?? lookup(basename(file)),
-      );
+      contentType ??= lookup(basename(file)) ?? "text/html";
+      if (contentType.includes("text") || contentType.includes("application")) {
+        contentType += "; charset=utf-8";
+      }
+      setResponseHeader(e, "Content-Type", contentType);
       return sendStream(e, createReadStream(file));
     }
   });
