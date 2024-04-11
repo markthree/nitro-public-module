@@ -33,35 +33,37 @@ function nitroPublic(options: Options = defaultOptions): NitroModule {
 
       useVirtual();
 
-      if (isPresetDisabled()) {
+      if (!isPresetEnabled()) {
         return;
       }
 
       useMiddleware(options.preset);
 
-      function isPresetDisabled() {
+      function isPresetEnabled() {
         const { preset, forcePresetEnabled } = options;
         const { preset: nitroPreset, dev } = nitro.options;
 
-        if (dev || preset === false) {
-          return true;
+        if (forcePresetEnabled !== undefined) {
+          return forcePresetEnabled;
         }
 
-        const isRuntime = ["node", "deno", "bun"].some((runtime) => {
-          return nitroPreset.includes(runtime);
-        });
-
-        if (isRuntime || forcePresetEnabled === true) {
+        if (dev || preset === false) {
           return false;
         }
 
-        const logger = nitro.logger.withTag("public");
+        const enabled = ["node", "deno", "bun"].some((runtime) => {
+          return nitroPreset.includes(runtime);
+        });
 
-        logger.warn(
-          `The preset "${preset}" is not supported by the ${nitroPreset} runtime. Of course, you can also enable the forceEnabled option to force it on`,
-        );
+        if (!enabled) {
+          const logger = nitro.logger.withTag("public");
 
-        return true;
+          logger.warn(
+            `The preset "${preset}" is not supported by the ${nitroPreset} runtime. Of course, you can also enable the forcePresetEnabled option to force it on`,
+          );
+        }
+
+        return enabled;
       }
 
       function useMiddleware(preset: Options["preset"] = "fallback") {
