@@ -1,4 +1,4 @@
-import { createPublicFallbackMiddleware } from "../virtual/nitro-public";
+import { createPublicFallbackMiddleware } from "#nitro-public";
 
 export default createPublicFallbackMiddleware((p) => {
   // maybe other file type
