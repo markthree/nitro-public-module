@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "name": "nitro-public-module",
   "description": "nitro module for better public compatibility | 对于 nitro 更好的静态资源兼容模块",
   "main": "./dist/index.cjs",
