@@ -1,7 +1,7 @@
 import { lookup } from "mrmime";
+import { dirname, join } from "pathe";
 import { fileURLToPath } from "node:url";
 import { lstat } from "node:fs/promises";
-import { basename, dirname, join } from "pathe";
 import { createReadStream, existsSync } from "node:fs";
 import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
 import {
@@ -70,9 +70,8 @@ export function createPublicFallbackMiddleware(factory) {
 
     if (existsSync(file) && (await lstat(file)).isFile()) {
       setResponseStatus(e, 200);
-      contentType ??= lookup(basename(file)) ?? "text/html";
-      if (contentType.includes("text") || contentType.includes("application")) {
-        contentType += "; charset=utf-8";
+      if (!contentType) {
+        contentType = getContentType(file);
       }
       setResponseHeader(e, "Content-Type", contentType);
       return sendStream(e, createReadStream(file));
@@ -83,4 +82,55 @@ export function createPublicFallbackMiddleware(factory) {
     handler() {},
     onBeforeResponse: [beforeResponse],
   });
+}
+
+/**
+ * get contentType
+ * @param {string | undefined} file
+ * @example
+ * ```js
+ * import { getContentType } from "#nitro-public";
+ *
+ * getContentType("index.html") // text/html; charset=utf-8
+ * ```
+ */
+export function getContentType(file) {
+  if (!file) {
+    return "text/html; charset=utf-8";
+  }
+
+  const contentType = lookup(file);
+  if (!contentType) {
+    return "text/html; charset=utf-8";
+  }
+
+  if (contentType.includes("charset")) {
+    return contentType;
+  }
+
+  if (isUtf8Charset(contentType)) {
+    return contentType + "; charset=utf-8";
+  }
+
+  return contentType;
+}
+
+const ignoreFlag = ["stream", "zip"];
+const textFlag = ["text", "java", "xml", "json", "script"];
+
+/**
+ * @param {string} contentType
+ * @returns {boolean}
+ * @example
+ * ```js
+ * import { getContentType } from "#nitro-public";
+ *
+ * getContentType("index.html") // text/html; charset=utf-8
+ * ```
+ */
+export function isUtf8Charset(contentType) {
+  if (textFlag.some((v) => contentType.includes(v))) {
+    return !ignoreFlag.some((v) => contentType.includes(v));
+  }
+  return false;
 }
