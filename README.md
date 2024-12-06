@@ -108,6 +108,8 @@ export default createPublicFallbackMiddleware((withoutSlashPathname) => {
     contentType: "text/html", // If not set, it will be inferred from the extname of the file
     withPublicDir: true, // Default to true, help you process the path
   };
+}, {
+  skipDev: false, // Default to true, skip in development environment
 });
 ```
 

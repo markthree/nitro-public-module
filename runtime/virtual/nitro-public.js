@@ -32,9 +32,13 @@ export function publicDir() {
  * create a fallback middleware for public
  * @typedef {{ file?: string, contentType?: string, withPublicDir?: boolean }} Meta
  * @param {(withoutSlashPathname: string) => Meta | Promise<Meta> | void} factory
+ * @param { {skipDev?: boolean} } options
  */
-export function createPublicFallbackMiddleware(factory) {
-  if (import.meta.dev) {
+export function createPublicFallbackMiddleware(
+  factory,
+  options = { skipDev: true },
+) {
+  if (options.skipDev && import.meta.dev) {
     return eventHandler(() => {});
   }
   const beforeResponse = defineResponseMiddleware(async (e) => {

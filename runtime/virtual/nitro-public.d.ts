@@ -39,6 +39,12 @@ type Factory = (withoutSlashPathname: string) => Meta | Promise<Meta> | void;
  */
 export const createPublicFallbackMiddleware: (
   factory: Factory,
+  options?: {
+    /**
+     * @default true
+     */
+    skipDev?: boolean;
+  },
 ) => typeof eventHandler;
 
 /**

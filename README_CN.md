@@ -107,6 +107,8 @@ export default createPublicFallbackMiddleware((withoutSlashPathname) => {
     contentType: "text/html", // 如果没有设置，将自动从文件后缀名推断
     withPublicDir: true, // 默认为 true，自动帮你设置正确路径
   };
+}, {
+  skipDev: false, // 默认 true，跳过开发环境
 });
 ```
 
